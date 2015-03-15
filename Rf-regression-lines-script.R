@@ -19,7 +19,11 @@ ratio = sorted[2]/sorted[1]
 ratio = sum(sorted)/sorted[1]
 
 
-lm(z ~ x, meanSubset)
+
+testlm = lm(z ~ x, meanSubset)
+testlm = summary(testlm)
+pval = pf(testlm$fstatistic[1],testlm$fstatistic[2],testlm$fstatistic[3],lower.tail=FALSE) 
+pval
 
 coef = lm_eqn(meanSubset)
 coef
@@ -34,3 +38,44 @@ groups = cutree(clu2,3)
 rect.hclust(clu2, k=3, border="red")
 
 
+altSlopeAnalysis = function(subs){
+  
+  distanceList =  data.frame(distances=numeric(nrow(subs)),id=numeric(nrow(subs))) 
+  pointId = 999
+  
+  # for each point {
+  for (i in 1:nrow(subs)){
+    
+    largestDist = 0
+    point = c(subs$z[i],subs$x[i]) 
+    
+    #debug 
+    # point = c(subs$z[1],subs$X[1])
+    
+    # create a list of distances from that one point to all others
+    for (j in 1:nrow(subs)){
+      secondPoint = c(subs$z[j],subs$x[j])
+      currentDist = dist(rbind(point,secondPoint))
+      # distanceList$distances[j] = currentDist
+      #  }
+      #distanceList    
+      
+      if(currentDist>largestDist){
+        largestDist = currentDist
+        pointId = j   
+      }  
+    }
+    distanceList$distances[i]=largestDist
+    distanceList$id[i]=pointId
+    
+  }
+  distanceList    
+}
+
+
+
+## ordering wholedout_mini
+library(plyr)
+
+wholedout_mini2 = arrange(wholedout_mini,participant,condition,m)
+wholedout_mini = wholedout_mini2

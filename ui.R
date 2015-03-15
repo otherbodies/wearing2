@@ -4,8 +4,11 @@
 #
 # http://shiny.rstudio.com
 #
+options(rgl.useNULL=TRUE)
 
 library(shiny)
+library(shinyRGL)
+library(rgl)
 
 shinyUI(fluidPage(
 
@@ -23,25 +26,33 @@ shinyUI(fluidPage(
       ,
       selectInput(inputId = "condition",
                   label = "Condition:",
-                  choices = c("str","hd","tr"),
+                  choices = c("str","hd","tr","eyes"),
                   selected = "str")
       ,
       selectInput(inputId = "task",
                   label = "Task:",
-                  choices = c("month","crazy"),
+                  choices = c("month","crazy","mini"),
                   selected = "month")
       ,
       selectInput(inputId = "model",
                   label = "Model Fit:",
-                  choices = c("null","plot 45deg shift","cluster plot"),
+                  choices = c("null","plot 45deg shift","furthest points","cluster plot"),
                   selected = "null")
+      ,
+      selectInput(inputId = "plane",
+                  label = "Plane:",
+                  choices = c("zx plane","zy plane","2d data"),
+                  selected = "zx plane")
+
     ),
 
     # Show a plot of the generated distribution
     mainPanel(
       plotOutput("distPlot"),
       textOutput("textOut"),
-      textOutput("textOut2")
+      textOutput("textOut2"),
+      textOutput("textOut3"),
+      webGLOutput("myWebGL",width="800px",height="800px")
     )
   )
 ))
