@@ -79,3 +79,11 @@ library(plyr)
 
 wholedout_mini2 = arrange(wholedout_mini,participant,condition,m)
 wholedout_mini = wholedout_mini2
+
+
+
+##
+gg = ggplot(temp2d,aes(x=mouse_x,y=mouse_y,colour=month_no,shape=month_no))+coord_equal()+geom_point(size=4)+ylim(1050,0)+xlim(0,1250)
+gg = gg+ scale_shape_manual(values=c(15,16,17,18,19,8,15,16,17,18,19,8))
+gg = gg+ scale_colour_brewer(palette="Paired")
+gg
